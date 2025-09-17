@@ -27,7 +27,6 @@
 #ifndef ANGLE_H
 #define ANGLE_H
 
-float getAngleDegrees(uint16_t raw);
 float readAngle();
 void zeroAngle(void);
 void calibratePro(void);

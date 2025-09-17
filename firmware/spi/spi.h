@@ -46,4 +46,4 @@ uint8_t readRegister(uint8_t reg);
 void writeRegister(int registerAddress, int registerValue);
 void checkFlash(void);
 
-#endif // SPI_H
+#endif

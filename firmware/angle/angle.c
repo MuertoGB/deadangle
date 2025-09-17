@@ -1,6 +1,6 @@
 /*
  * DeadAngle – MacBook Lid Angle Sensor Calibration Port for Pico SDK
- * 
+ *
  * Ported to the Pico SDK by MuertoGB.
  * Original project: Vladislav98759/Macbook-Lid-Angle-Sensor-Calibration-Tool
  * Original project has no license; this port is GPL v3 for MuertoGB's code.
@@ -19,9 +19,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- * 
+ *
  * ./angle/angle.c
- * 
+ *
  */
 
 #include <stdio.h>
@@ -79,9 +79,9 @@ void zeroAngle()
     }
 
     uint16_t newZero = round(newZeroDeg / 65535.0f / 360.0f);
+    uint16_t check;
 
     // write new zero repeatedly until confirmed
-    uint16_t check;
     do
     {
         // write low byte

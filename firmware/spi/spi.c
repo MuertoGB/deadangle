@@ -1,6 +1,6 @@
 /*
  * DeadAngle – MacBook Lid Angle Sensor Calibration Port for Pico SDK
- * 
+ *
  * Ported to the Pico SDK by MuertoGB.
  * Original project: Vladislav98759/Macbook-Lid-Angle-Sensor-Calibration-Tool
  * Original project has no license; this port is GPL v3 for MuertoGB's code.
@@ -19,9 +19,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- * 
+ *
  * ./spi/spi.c
- * 
+ *
  */
 
 #include <stdio.h>
@@ -72,13 +72,15 @@ void restoreRegistersFromNVM()
 }
 
 // helpers
-static inline void writeRegisterCommand(int reg, uint16_t value) {
+static inline void writeRegisterCommand(int reg, uint16_t value)
+{
     setCsLow;
     spi_transfer16((0b100 << 13) | (reg << 8) | value);
     setCsHigh;
 }
 
-static inline uint16_t readRegisterCommand(int reg) {
+static inline uint16_t readRegisterCommand(int reg)
+{
     setCsLow;
     spi_transfer16((0b010 << 13) | (reg << 8)); // read command
     setCsHigh;
@@ -110,26 +112,30 @@ void writeRegister(int registerAddress, int registerValue)
 {
     uint16_t v = (uint16_t)registerValue;
 
-    // First attempt
+    // first attempt
     writeRegisterCommand(registerAddress, v);
     sleep_ms(1);
     uint16_t checkValue = readRegisterCommand(registerAddress);
 
-    if ((checkValue & 0xFF) == v) {
+    if ((checkValue & 0xFF) == v)
+    {
         printf("Register %d write successful.\n", registerAddress);
         return;
     }
 
     printf("Write to register %d failed. Retrying...\n", registerAddress);
 
-    // Retry once
+    // fetry once
     writeRegisterCommand(registerAddress, v);
     sleep_ms(1);
     checkValue = readRegisterCommand(registerAddress);
 
-    if ((checkValue & 0xFF) == v) {
+    if ((checkValue & 0xFF) == v)
+    {
         printf("Register %d write successful after retry\n", registerAddress);
-    } else {
+    }
+    else
+    {
         printf("Write to register %d failed again\n", registerAddress);
     }
 }
@@ -139,7 +145,7 @@ void checkFlash()
 {
     uint16_t originalValue, checkValue;
 
-    // --- Read register 0 ---
+    // read register 0
     setCsLow;
     spi_transfer16((0b010 << 13) | (0 << 8));
     setCsHigh;
@@ -148,11 +154,11 @@ void checkFlash()
     originalValue = spi_transfer16(0);
     setCsHigh;
 
-    // --- Attempt write ---
+    // attempt write
     writeRegister(0, (originalValue & 0xFF) + 1);
     sleep_ms(1);
 
-    // --- Read register 0 again ---
+    // read register 0 again
     setCsLow;
     spi_transfer16((0b010 << 13) | (0 << 8));
     setCsHigh;
@@ -161,7 +167,7 @@ void checkFlash()
     checkValue = spi_transfer16(0);
     setCsHigh;
 
-    // --- Check if write succeeded ---
+    // check if write succeeded.
     if ((checkValue & 0xFF) == ((originalValue & 0xFF) + 1))
     {
         printf("Flash is unlocked (write succeeded)\n");
